@@ -8,6 +8,8 @@ using UnityEngine.UIElements;
 public class PlayerController : MonoBehaviour
 {
 
+    Animator animator;
+    Vector2 moveDirection = new Vector2(1, 0);
     private Vector2 playerInput;
     public float moveSpeed = 5.0f;
     private Rigidbody2D rb;
@@ -22,12 +24,23 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         currentHealth = maxHealth;
     }
 
     // Update is called once per frame
     void Update()
     { 
+        if(!Mathf.Approximately(playerInput.x, 0.0f) || !Mathf.Approximately(playerInput.y,0.0f))
+        {
+           moveDirection.Set(playerInput.x, playerInput.y);
+           moveDirection.Normalize();
+        }
+
+        animator.SetFloat("Look X", moveDirection.x);
+        animator.SetFloat("Look Y", moveDirection.y);
+        animator.SetFloat("Speed", playerInput.magnitude);
+
         if(isInCoolDown) {
             currentCooldown -= Time.deltaTime;
             if(currentCooldown < 0) {
@@ -58,5 +71,11 @@ public class PlayerController : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
         UIHandler.instance.setHealthValue(currentHealth / (float)maxHealth);
         Debug.Log(currentHealth + "/" + maxHealth);
+        if(amount < 0) {
+            animator.SetTrigger("Hit");
+        }
+        if(currentHealth == 0) {
+            Destroy(gameObject);
+        }
     }
 }

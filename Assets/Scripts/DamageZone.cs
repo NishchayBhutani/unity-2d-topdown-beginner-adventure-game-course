@@ -12,9 +12,6 @@ public class DamageZone : MonoBehaviour
             PlayerController controller = collider.gameObject.GetComponent<PlayerController>();
             if (controller != null) {
                 controller.ChangeHealthWithCoolDown(damageAmount);
-                if(controller.health <= 0) {
-                    Destroy(collider.gameObject);
-                }
             }
         }
     }
