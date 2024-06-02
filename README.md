@@ -5,3 +5,5 @@ Added so far:
   Healing Zones
   Periodic cooldown after taking damage / getting healed via damaging and healing zones
   HealthBar
+  Player and Enemy animations
+
