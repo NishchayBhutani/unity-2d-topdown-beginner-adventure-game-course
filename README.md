@@ -6,4 +6,4 @@ Added so far:
   Periodic cooldown after taking damage / getting healed via damaging and healing zones
   HealthBar
   Player and Enemy animations
-
+  Projectiles
