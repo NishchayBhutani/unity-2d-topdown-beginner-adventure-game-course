@@ -8,6 +8,7 @@ using UnityEngine.UIElements;
 public class PlayerController : MonoBehaviour
 {
 
+    public GameObject projectilePrefab;
     Animator animator;
     Vector2 moveDirection = new Vector2(1, 0);
     private Vector2 playerInput;
@@ -77,5 +78,12 @@ public class PlayerController : MonoBehaviour
         if(currentHealth == 0) {
             Destroy(gameObject);
         }
+    }
+
+    void OnShoot()  {
+        GameObject projectileObject = Instantiate(projectilePrefab, rb.position + Vector2.up * 0.5f, Quaternion.identity);
+        Projectile projectile = projectileObject.GetComponent<Projectile>();
+        projectile.Launch(moveDirection, 300);
+        animator.SetTrigger("Launch");
     }
 }
