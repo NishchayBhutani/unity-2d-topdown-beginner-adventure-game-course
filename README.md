@@ -7,3 +7,4 @@ Added so far:
   HealthBar
   Player and Enemy animations
   Projectiles
+  Enemy "fix" mechanic
