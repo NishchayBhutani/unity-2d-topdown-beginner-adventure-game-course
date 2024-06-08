@@ -12,6 +12,12 @@ public class Projectile : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
+    void Update() {
+        if(transform.position.magnitude > 100.0f) {
+            Destroy(gameObject);
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,8 +28,12 @@ public class Projectile : MonoBehaviour
         rb.AddForce(direction * force);
     }
 
-    void OnCollisionEnter2D(Collision2D collision) {
-            Debug.Log("Projectile collision with " + collision.gameObject);
+    void OnTriggerEnter2D(Collider2D collider) {
+         Debug.Log("Entered Trigger");
+            EnemyController enemy = collider.gameObject.GetComponent<EnemyController>();
+            if(enemy != null) {
+                enemy.Fix();
+            }
             Destroy(gameObject);
     }
 

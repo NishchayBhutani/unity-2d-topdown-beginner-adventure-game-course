@@ -6,6 +6,7 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
 
+    bool aggressive = true;
     Animator animator;
     public float moveSpeed = 2.0f;
     Rigidbody2D rb;
@@ -36,6 +37,10 @@ public class EnemyController : MonoBehaviour
     // FixedUpdate has the same call rate as the physics system
     void FixedUpdate() {
         
+        if(!aggressive) {
+            return;
+        }
+        
         Vector2 position = rb.position;
 
         if(vertical) {
@@ -58,5 +63,11 @@ public class EnemyController : MonoBehaviour
                 controller.ChangeHealth(-damageAmountOnCollision);
             }
         }
+    }
+
+    public void Fix() {
+        aggressive = false;
+        rb.simulated = false;
+        animator.SetTrigger("Fixed");
     }
 }
