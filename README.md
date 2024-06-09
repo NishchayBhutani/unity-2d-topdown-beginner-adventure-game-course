@@ -8,3 +8,5 @@ Added so far:
   Player and Enemy animations
   Projectiles
   Enemy "fix" mechanic
+  Audio
+  Smoke effect using Unity's particle system
