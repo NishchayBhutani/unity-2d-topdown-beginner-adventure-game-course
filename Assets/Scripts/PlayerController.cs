@@ -8,6 +8,9 @@ using UnityEngine.UIElements;
 public class PlayerController : MonoBehaviour
 {
 
+    public AudioClip playerHitClip;
+    public AudioSource footstepsAudioSource;
+    public AudioSource oneshotAudioSource;
     public GameObject projectilePrefab;
     Animator animator;
     Vector2 moveDirection = new Vector2(1, 0);
@@ -52,6 +55,15 @@ public class PlayerController : MonoBehaviour
     }
 
     void FixedUpdate() {
+        if(playerInput.x != 0 || playerInput.y != 0) {
+            if(!footstepsAudioSource.isPlaying) {
+                footstepsAudioSource.Play();
+            }
+        } else {
+            if(footstepsAudioSource.isPlaying) {
+                footstepsAudioSource.Stop();
+            }
+        }
         rb.MovePosition(rb.position + playerInput * moveSpeed * Time.deltaTime);
     }
 
@@ -73,6 +85,7 @@ public class PlayerController : MonoBehaviour
         UIHandler.instance.setHealthValue(currentHealth / (float)maxHealth);
         Debug.Log(currentHealth + "/" + maxHealth);
         if(amount < 0) {
+            oneshotAudioSource.PlayOneShot(playerHitClip);
             animator.SetTrigger("Hit");
         }
         if(currentHealth == 0) {
@@ -85,5 +98,21 @@ public class PlayerController : MonoBehaviour
         Projectile projectile = projectileObject.GetComponent<Projectile>();
         projectile.Launch(moveDirection, 300);
         animator.SetTrigger("Launch");
+    }
+
+    void OnTalk() {
+        RaycastHit2D hit = Physics2D.Raycast(rb.position + Vector2.up * 0.2f, moveDirection, 1.5f, LayerMask.GetMask("NPC"));
+        if(hit.collider != null) {
+            Debug.Log("Raycast has hit the object " + hit.collider.gameObject);
+            NonPlayableCharacter character = hit.collider.GetComponent<NonPlayableCharacter>();
+            Debug.Log(character);
+            if(character != null) {
+                UIHandler.instance.DisplayDialogue();
+            }
+        }
+    }
+
+    public void PlaySound(AudioClip clip) {
+        oneshotAudioSource.PlayOneShot(clip);
     }
 }

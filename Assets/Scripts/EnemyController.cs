@@ -6,6 +6,9 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
 
+    public ParticleSystem smokeEffect;
+    public AudioClip fixedClip;
+    public AudioSource audioSource;
     bool aggressive = true;
     Animator animator;
     public float moveSpeed = 2.0f;
@@ -21,6 +24,7 @@ public class EnemyController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -68,6 +72,9 @@ public class EnemyController : MonoBehaviour
     public void Fix() {
         aggressive = false;
         rb.simulated = false;
+        audioSource.clip = fixedClip;
+        audioSource.Play();
+        smokeEffect.Stop();
         animator.SetTrigger("Fixed");
     }
 }
